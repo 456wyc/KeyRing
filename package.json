@@ -22,7 +22,7 @@
     "account-management",
     "security"
   ],
-  "author": "Your Name",
+  "author": "wyc",
   "license": "MIT",
   "devDependencies": {
     "@types/crypto-js": "^4.1.3",
