@@ -114,6 +114,39 @@ export interface I18nMessages {
     createTag: string
     noTags: string
     filterByTag: string
+    showTags: string
+    hideTags: string
+  }
+
+  // Backup & Restore
+  backup: {
+    title: string
+    backupRestore: string
+    export: string
+    import: string
+    exportNow: string
+    importNow: string
+    secureExport: string
+    exportDescription: string
+    importWarning: string
+    importDescription: string
+    currentData: string
+    totalAccounts: string
+    lastModified: string
+    never: string
+    noDataToExport: string
+    selectFile: string
+    chooseFile: string
+    importing: string
+    exportFailed: string
+    importFailed: string
+    importSuccess: string
+    importSuccessTitle: string
+    importErrorTitle: string
+    invalidFormat: string
+    invalidAccountData: string
+    importConfirm: string
+    accountsImported: string
   }
 
   // Messages

@@ -110,6 +110,36 @@ export const enMessages: I18nMessages = {
     hideTags: 'Hide Tags'
   },
 
+  backup: {
+    title: 'Backup & Restore',
+    backupRestore: 'Backup & Restore',
+    export: 'Export Data',
+    import: 'Import Data',
+    exportNow: 'Export Backup',
+    importNow: 'Import Backup',
+    secureExport: 'Secure Data Export',
+    exportDescription: 'Create a secure backup of all your account data. This file can be used to restore your data on another device or after reinstalling the application.',
+    importWarning: 'Import Warning',
+    importDescription: 'Importing data will add new accounts to your existing collection. Duplicate accounts may be created if you import the same data multiple times.',
+    currentData: 'Current Data Summary',
+    totalAccounts: 'Total Accounts',
+    lastModified: 'Last Modified',
+    never: 'Never',
+    noDataToExport: 'No Data to Export',
+    selectFile: 'Select a backup file to import your data',
+    chooseFile: 'Choose File',
+    importing: 'Importing data...',
+    exportFailed: 'Failed to export data',
+    importFailed: 'Failed to import data',
+    importSuccess: 'Data imported successfully',
+    importSuccessTitle: 'Import Successful',
+    importErrorTitle: 'Import Failed',
+    invalidFormat: 'Invalid backup file format',
+    invalidAccountData: 'Invalid account data in backup file',
+    importConfirm: 'This will import {count} accounts into your collection. You currently have {current} accounts. Continue?',
+    accountsImported: '{count} accounts imported successfully'
+  },
+
   messages: {
     failedToAdd: 'Failed to add account',
     failedToUpdate: 'Failed to update account',

@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Plus, Lock, Search, Grid, List, Tag } from 'lucide-react'
+import { Plus, Lock, Search, Grid, List, Tag, Settings } from 'lucide-react'
 import { Account } from '../types'
 import { AccountCard } from './AccountCard'
 import { AccountListView } from './AccountListView'
 import { AccountDetailModal } from './AccountDetailModal'
 import { AddAccountModal } from './AddAccountModal'
 import { TagFilter } from './TagFilter'
+import { BackupRestore } from './BackupRestore'
 import { LanguageToggle } from './LanguageToggle'
 import { useI18n } from '../i18n'
 
@@ -31,6 +32,7 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
     const saved = localStorage.getItem('keyring-show-tags')
     return saved ? JSON.parse(saved) : true
   })
+  const [showBackupRestore, setShowBackupRestore] = useState(false)
 
   const filteredAccounts = accounts.filter(account => {
     // 文本筛选
@@ -85,6 +87,14 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
           <h1 className="text-2xl font-semibold text-gray-900">{t('app.title')}</h1>
           <div className="flex items-center space-x-2">
             <LanguageToggle />
+            <button
+              onClick={() => setShowBackupRestore(true)}
+              className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              title={t('backup.title')}
+            >
+              <Settings size={20} />
+              <span>{t('backup.backupRestore')}</span>
+            </button>
             <button
               onClick={onLock}
               className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
@@ -239,6 +249,14 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {showBackupRestore && (
+        <BackupRestore
+          accounts={accounts}
+          onClose={() => setShowBackupRestore(false)}
+          onAccountsImported={onAccountsChange}
+        />
       )}
     </div>
   )

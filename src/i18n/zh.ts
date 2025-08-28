@@ -110,6 +110,36 @@ export const zhMessages: I18nMessages = {
     hideTags: '隐藏标签'
   },
 
+  backup: {
+    title: '备份与恢复',
+    backupRestore: '备份与恢复',
+    export: '导出数据',
+    import: '导入数据',
+    exportNow: '导出备份',
+    importNow: '导入备份',
+    secureExport: '安全数据导出',
+    exportDescription: '创建所有账户数据的安全备份。此文件可用于在其他设备上恢复数据或重新安装应用程序后恢复数据。',
+    importWarning: '导入警告',
+    importDescription: '导入数据将向您现有的收藏中添加新账户。如果多次导入相同数据，可能会创建重复账户。',
+    currentData: '当前数据摘要',
+    totalAccounts: '账户总数',
+    lastModified: '最后修改',
+    never: '从未',
+    noDataToExport: '无数据可导出',
+    selectFile: '选择备份文件以导入您的数据',
+    chooseFile: '选择文件',
+    importing: '正在导入数据...',
+    exportFailed: '导出数据失败',
+    importFailed: '导入数据失败',
+    importSuccess: '数据导入成功',
+    importSuccessTitle: '导入成功',
+    importErrorTitle: '导入失败',
+    invalidFormat: '无效的备份文件格式',
+    invalidAccountData: '备份文件中的账户数据无效',
+    importConfirm: '这将向您的收藏中导入 {count} 个账户。您当前有 {current} 个账户。继续吗？',
+    accountsImported: '成功导入 {count} 个账户'
+  },
+
   messages: {
     failedToAdd: '添加账户失败',
     failedToUpdate: '更新账户失败',
