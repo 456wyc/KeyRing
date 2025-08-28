@@ -1,0 +1,41 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.password-field {
+  font-family: 'Courier New', monospace;
+}
+
+.copy-button {
+  @apply opacity-0 group-hover:opacity-100 transition-opacity duration-200;
+}
+
+.field-row:hover .copy-button {
+  @apply opacity-100;
+}
+
+.edit-mode {
+  @apply border-blue-300 bg-blue-50;
+}
+
+.readonly-mode {
+  @apply border-gray-300 bg-gray-50;
+}
