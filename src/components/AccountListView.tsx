@@ -1,6 +1,7 @@
 import React from 'react'
 import { Account } from '../types'
 import { Eye, Calendar } from 'lucide-react'
+import { TagDisplay } from './TagDisplay'
 
 interface AccountListViewProps {
   accounts: Account[]
@@ -24,10 +25,11 @@ export const AccountListView: React.FC<AccountListViewProps> = ({
       <div className="divide-y divide-gray-100">
         <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
           <div className="grid grid-cols-12 gap-4 text-xs font-medium text-gray-500 uppercase tracking-wide">
-            <div className="col-span-4">Account Name</div>
+            <div className="col-span-3">Account Name</div>
+            <div className="col-span-3">Tags</div>
             <div className="col-span-2">Fields</div>
             <div className="col-span-2">Visible</div>
-            <div className="col-span-4">Last Updated</div>
+            <div className="col-span-2">Last Updated</div>
           </div>
         </div>
         
@@ -43,7 +45,7 @@ export const AccountListView: React.FC<AccountListViewProps> = ({
               className="px-6 py-4 hover:bg-gray-50 cursor-pointer transition-colors group"
             >
               <div className="grid grid-cols-12 gap-4 items-center">
-                <div className="col-span-4">
+                <div className="col-span-3">
                   <div className="flex items-center space-x-2">
                     <div className="min-w-0 flex-1">
                       <h3 className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors">
@@ -51,6 +53,15 @@ export const AccountListView: React.FC<AccountListViewProps> = ({
                       </h3>
                     </div>
                   </div>
+                </div>
+                
+                <div className="col-span-3">
+                  <TagDisplay 
+                    tags={account.tags || []} 
+                    maxTags={3}
+                    size="sm"
+                    showIcon={false}
+                  />
                 </div>
                 
                 <div className="col-span-2">
@@ -66,7 +77,7 @@ export const AccountListView: React.FC<AccountListViewProps> = ({
                   </span>
                 </div>
                 
-                <div className="col-span-4">
+                <div className="col-span-2">
                   <div className="flex items-center text-sm text-gray-500">
                     <Calendar size={14} className="mr-1" />
                     <span>{new Date(account.updatedAt).toLocaleDateString()}</span>

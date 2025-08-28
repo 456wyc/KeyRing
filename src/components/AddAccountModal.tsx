@@ -1,18 +1,33 @@
 import React, { useState } from 'react'
 import { X, Plus, Settings, Eye, EyeOff } from 'lucide-react'
-import { NewAccount, PasswordRules, FieldConfig } from '../types'
+import { NewAccount, PasswordRules, FieldConfig, Account } from '../types'
 import { PasswordGenerator } from './PasswordGenerator'
 import { DraggableFieldList } from './DraggableFieldList'
+import { TagInput } from './TagInput'
+import { useI18n } from '../i18n'
 
 interface AddAccountModalProps {
+  accounts: Account[]
   onClose: () => void
   onAccountAdded: () => void
 }
 
 export const AddAccountModal: React.FC<AddAccountModalProps> = ({
+  accounts,
   onClose,
   onAccountAdded
 }) => {
+  const { t } = useI18n()
+  
+  // 获取所有现有标签
+  const existingTags = React.useMemo(() => {
+    const tagSet = new Set<string>()
+    accounts.forEach(acc => {
+      acc.tags?.forEach(tag => tagSet.add(tag))
+    })
+    return Array.from(tagSet).sort()
+  }, [accounts])
+
   const [account, setAccount] = useState<NewAccount>({
     name: '',
     fields: {
@@ -210,7 +225,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
         <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto">
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Add New Account</h2>
+            <h2 className="text-xl font-semibold text-gray-900">{t('addAccountModal.title')}</h2>
             <button
               onClick={onClose}
               className="p-2 text-gray-500 hover:bg-gray-100 rounded-full"
@@ -222,7 +237,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({
           <form onSubmit={handleSubmit} className="p-6">
             <div className="mb-6">
               <label htmlFor="accountName" className="block text-sm font-medium text-gray-700 mb-2">
-                Account Name *
+                {t('addAccountModal.accountName')} *
               </label>
               <input
                 id="accountName"
@@ -230,21 +245,30 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({
                 value={account.name}
                 onChange={(e) => setAccount(prev => ({ ...prev, name: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g., Gmail, GitHub, Bank Account"
+                placeholder={t('addAccountModal.accountNamePlaceholder')}
                 required
               />
             </div>
 
             <div className="mb-6">
+              <TagInput
+                tags={account.tags || []}
+                existingTags={existingTags}
+                onChange={(tags) => setAccount(prev => ({ ...prev, tags }))}
+                placeholder={t('tags.addTags')}
+              />
+            </div>
+
+            <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-gray-700">Account Fields</h3>
+                <h3 className="text-sm font-medium text-gray-700">{t('addAccountModal.accountFields')}</h3>
                 <button
                   type="button"
                   onClick={addField}
                   className="text-sm text-blue-600 hover:text-blue-700 flex items-center space-x-1"
                 >
                   <Plus size={16} />
-                  <span>Add Field</span>
+                  <span>{t('account.addField')}</span>
                 </button>
               </div>
 
@@ -273,14 +297,14 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({
                 onClick={onClose}
                 className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 type="submit"
                 disabled={loading || !account.name.trim()}
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg transition-colors"
               >
-                {loading ? 'Adding...' : 'Add Account'}
+                {loading ? t('addAccountModal.adding') : t('addAccountModal.addAccount')}
               </button>
             </div>
           </form>

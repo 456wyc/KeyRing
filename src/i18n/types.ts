@@ -107,6 +107,15 @@ export interface I18nMessages {
     removeField: string
   }
 
+  // Tags
+  tags: {
+    tags: string
+    addTags: string
+    createTag: string
+    noTags: string
+    filterByTag: string
+  }
+
   // Messages
   messages: {
     failedToAdd: string

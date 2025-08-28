@@ -7,7 +7,7 @@ interface I18nContextType {
   language: SupportedLanguage
   messages: I18nMessages
   setLanguage: (language: SupportedLanguage) => void
-  t: (key: string) => string
+  t: (key: string, params?: Record<string, any>) => string
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined)
@@ -39,8 +39,8 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
     localStorage.setItem('keyring-language', newLanguage)
   }
 
-  // Helper function to get nested translation
-  const t = (key: string): string => {
+  // Helper function to get nested translation with template support
+  const t = (key: string, params?: Record<string, any>): string => {
     const keys = key.split('.')
     let value: any = messages
     
@@ -53,7 +53,16 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
       }
     }
     
-    return typeof value === 'string' ? value : key
+    let result = typeof value === 'string' ? value : key
+    
+    // Replace template variables if params provided
+    if (params && typeof result === 'string') {
+      Object.entries(params).forEach(([paramKey, paramValue]) => {
+        result = result.replace(new RegExp(`\\{${paramKey}\\}`, 'g'), String(paramValue))
+      })
+    }
+    
+    return result
   }
 
   return (

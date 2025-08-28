@@ -100,6 +100,16 @@ export const enMessages: I18nMessages = {
     removeField: 'Remove field'
   },
 
+  tags: {
+    tags: 'Tags',
+    addTags: 'Add tags...',
+    createTag: 'Create tag',
+    noTags: 'No tags',
+    filterByTag: 'Filter by tag',
+    showTags: 'Show Tags',
+    hideTags: 'Hide Tags'
+  },
+
   messages: {
     failedToAdd: 'Failed to add account',
     failedToUpdate: 'Failed to update account',

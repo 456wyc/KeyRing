@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Plus, Lock, Search, Grid, List } from 'lucide-react'
+import { Plus, Lock, Search, Grid, List, Tag } from 'lucide-react'
 import { Account } from '../types'
 import { AccountCard } from './AccountCard'
 import { AccountListView } from './AccountListView'
 import { AccountDetailModal } from './AccountDetailModal'
 import { AddAccountModal } from './AddAccountModal'
+import { TagFilter } from './TagFilter'
 import { LanguageToggle } from './LanguageToggle'
 import { useI18n } from '../i18n'
 
@@ -25,13 +26,26 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card')
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
   const [editingAccount, setEditingAccount] = useState<Account | null>(null)
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [showTags, setShowTags] = useState<boolean>(() => {
+    const saved = localStorage.getItem('keyring-show-tags')
+    return saved ? JSON.parse(saved) : true
+  })
 
-  const filteredAccounts = accounts.filter(account =>
-    account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    Object.keys(account.fields).some(key =>
-      key.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  )
+  const filteredAccounts = accounts.filter(account => {
+    // 文本筛选
+    const matchesSearch = searchTerm === '' || 
+      account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      Object.keys(account.fields).some(key =>
+        key.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    
+    // 标签筛选：如果没有选中标签，显示所有；如果选中标签，必须包含至少一个选中的标签
+    const matchesTags = selectedTags.length === 0 ||
+      selectedTags.some(tag => account.tags?.includes(tag))
+    
+    return matchesSearch && matchesTags
+  })
 
   const handleAccountClick = (account: Account) => {
     setSelectedAccount(account)
@@ -44,6 +58,24 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
 
   const handleCloseDetailModal = () => {
     setSelectedAccount(null)
+  }
+
+  const handleTagToggle = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag)
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    )
+  }
+
+  const handleClearTagFilters = () => {
+    setSelectedTags([])
+  }
+
+  const toggleTagDisplay = () => {
+    const newValue = !showTags
+    setShowTags(newValue)
+    localStorage.setItem('keyring-show-tags', JSON.stringify(newValue))
   }
 
   return (
@@ -101,6 +133,18 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
               <List size={18} />
             </button>
           </div>
+
+          <button
+            onClick={toggleTagDisplay}
+            className={`p-2 rounded-lg transition-colors ${
+              showTags 
+                ? 'bg-green-100 text-green-700' 
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+            title={showTags ? t('tags.hideTags') : t('tags.showTags')}
+          >
+            <Tag size={18} />
+          </button>
           
           <button
             onClick={() => setShowAddModal(true)}
@@ -110,6 +154,15 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
             <span>{t('accountManager.addAccount')}</span>
           </button>
         </div>
+
+        {showTags && (
+          <TagFilter
+            accounts={accounts}
+            selectedTags={selectedTags}
+            onTagToggle={handleTagToggle}
+            onClearFilters={handleClearTagFilters}
+          />
+        )}
 
         {filteredAccounts.length === 0 ? (
           <div className="text-center py-12">
@@ -133,6 +186,8 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
                 <AccountCard
                   key={account.id}
                   account={account}
+                  accounts={accounts}
+                  showTags={showTags}
                   onUpdate={onAccountsChange}
                 />
               ))}
@@ -148,6 +203,7 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
 
       {showAddModal && (
         <AddAccountModal
+          accounts={accounts}
           onClose={() => setShowAddModal(false)}
           onAccountAdded={onAccountsChange}
         />
@@ -166,6 +222,8 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <AccountCard
               account={editingAccount}
+              accounts={accounts}
+              showTags={showTags}
               onUpdate={() => {
                 onAccountsChange()
                 setEditingAccount(null)

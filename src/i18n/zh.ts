@@ -100,6 +100,16 @@ export const zhMessages: I18nMessages = {
     removeField: '删除字段'
   },
 
+  tags: {
+    tags: '标签',
+    addTags: '添加标签...',
+    createTag: '创建标签',
+    noTags: '无标签',
+    filterByTag: '按标签筛选',
+    showTags: '显示标签',
+    hideTags: '隐藏标签'
+  },
+
   messages: {
     failedToAdd: '添加账户失败',
     failedToUpdate: '更新账户失败',

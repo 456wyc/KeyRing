@@ -3,13 +3,28 @@ import { Copy, Edit, Save, X, Trash2, Eye, EyeOff, Settings } from 'lucide-react
 import { Account, FieldConfig } from '../types'
 import { PasswordGenerator } from './PasswordGenerator'
 import { DraggableFieldList } from './DraggableFieldList'
+import { TagInput } from './TagInput'
+import { TagDisplay } from './TagDisplay'
+import { useI18n } from '../i18n'
 
 interface AccountCardProps {
   account: Account
+  accounts: Account[]
+  showTags?: boolean
   onUpdate: () => void
 }
 
-export const AccountCard: React.FC<AccountCardProps> = ({ account, onUpdate }) => {
+export const AccountCard: React.FC<AccountCardProps> = ({ account, accounts, showTags = true, onUpdate }) => {
+  const { t } = useI18n()
+  
+  // 获取所有现有标签
+  const existingTags = React.useMemo(() => {
+    const tagSet = new Set<string>()
+    accounts.forEach(acc => {
+      acc.tags?.forEach(tag => tagSet.add(tag))
+    })
+    return Array.from(tagSet).sort()
+  }, [accounts])
   const [isEditing, setIsEditing] = useState(false)
   const [editedAccount, setEditedAccount] = useState(account)
   const [visibleFields, setVisibleFields] = useState<Set<string>>(new Set())
@@ -45,6 +60,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account, onUpdate }) =
     try {
       await window.electronAPI.storage.updateAccount(account.id, {
         name: editedAccount.name,
+        tags: editedAccount.tags,
         fields: editedAccount.fields,
         fieldOrder: editedAccount.fieldOrder,
         passwordRules: editedAccount.passwordRules
@@ -279,6 +295,17 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account, onUpdate }) =
           </div>
         </div>
 
+        {isEditing && (
+          <div className="mb-4">
+            <TagInput
+              tags={editedAccount.tags || []}
+              existingTags={existingTags}
+              onChange={(tags) => setEditedAccount(prev => ({ ...prev, tags }))}
+              placeholder={t('tags.addTags')}
+            />
+          </div>
+        )}
+
         <DraggableFieldList
           fields={displayedAccount.fields}
           fieldOrder={displayedAccount.fieldOrder || Object.keys(displayedAccount.fields)}
@@ -304,6 +331,17 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account, onUpdate }) =
           >
             + Add Field
           </button>
+        )}
+
+        {/* 标签显示区域 */}
+        {!isEditing && showTags && displayedAccount.tags && displayedAccount.tags.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <TagDisplay 
+              tags={displayedAccount.tags} 
+              maxTags={5}
+              size="sm"
+            />
+          </div>
         )}
 
         <div className="mt-4 pt-4 border-t border-gray-100">

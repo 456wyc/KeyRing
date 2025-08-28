@@ -6,6 +6,7 @@ export interface FieldConfig {
 export interface Account {
   id: string
   name: string
+  tags?: string[]
   fields: { [key: string]: FieldConfig }
   fieldOrder?: string[]
   passwordRules?: PasswordRules
@@ -26,6 +27,7 @@ export interface PasswordRules {
 
 export interface NewAccount {
   name: string
+  tags?: string[]
   fields: { [key: string]: FieldConfig }
   fieldOrder?: string[]
   passwordRules?: PasswordRules
