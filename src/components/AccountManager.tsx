@@ -81,8 +81,9 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b border-gray-200 px-6 py-4">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+      {/* Fixed Header */}
+      <div className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-900">{t('app.title')}</h1>
           <div className="flex items-center space-x-2">
@@ -106,8 +107,9 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="mb-6 flex items-center space-x-4">
+      {/* Fixed Search Toolbar */}
+      <div className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
+        <div className="flex items-center space-x-4">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
@@ -164,17 +166,23 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
             <span>{t('accountManager.addAccount')}</span>
           </button>
         </div>
+      </div>
 
-        {showTags && (
-          <TagFilter
-            accounts={accounts}
-            selectedTags={selectedTags}
-            onTagToggle={handleTagToggle}
-            onClearFilters={handleClearTagFilters}
-          />
-        )}
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-6">
+          {showTags && (
+            <div className="mb-6">
+              <TagFilter
+                accounts={accounts}
+                selectedTags={selectedTags}
+                onTagToggle={handleTagToggle}
+                onClearFilters={handleClearTagFilters}
+              />
+            </div>
+          )}
 
-        {filteredAccounts.length === 0 ? (
+          {filteredAccounts.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-400 mb-4">
               {searchTerm ? t('accountManager.noSearchResults') : t('accountManager.noAccounts')}
@@ -209,6 +217,7 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
             />
           )
         )}
+        </div>
       </div>
 
       {showAddModal && (
