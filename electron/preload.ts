@@ -38,6 +38,10 @@ export interface ElectronAPI {
   dialog: {
     showError: (message: string) => Promise<void>
   }
+  crypto: {
+    encrypt: (data: string, password: string) => Promise<string>
+    decrypt: (encryptedData: string, password: string) => Promise<string>
+  }
 }
 
 const electronAPI: ElectronAPI = {
@@ -57,6 +61,10 @@ const electronAPI: ElectronAPI = {
   },
   dialog: {
     showError: (message: string) => ipcRenderer.invoke('dialog:showError', message)
+  },
+  crypto: {
+    encrypt: (data: string, password: string) => ipcRenderer.invoke('crypto:encrypt', data, password),
+    decrypt: (encryptedData: string, password: string) => ipcRenderer.invoke('crypto:decrypt', encryptedData, password)
   }
 }
 

@@ -137,7 +137,27 @@ export const enMessages: I18nMessages = {
     invalidFormat: 'Invalid backup file format',
     invalidAccountData: 'Invalid account data in backup file',
     importConfirm: 'This will import {count} accounts into your collection. You currently have {current} accounts. Continue?',
-    accountsImported: '{count} accounts imported successfully'
+    accountsImported: '{count} accounts imported successfully',
+    useEncryption: 'Encrypt backup file',
+    encryptionPassword: 'Encryption Password',
+    confirmPassword: 'Confirm Password',
+    enterPassword: 'Enter a strong password',
+    encryptionNote: 'Use a strong password to protect your backup. This password will be required when importing the backup.',
+    decryptionPassword: 'Decryption Password',
+    enterPasswordIfEncrypted: 'Enter password if backup is encrypted',
+    decryptionNote: 'Leave empty for unencrypted backups. Required for encrypted backup files.',
+    passwordRequired: 'Password is required for encrypted backup',
+    passwordMismatch: 'Passwords do not match',
+    passwordTooShort: 'Password must be at least 8 characters long',
+    wrongPassword: 'Incorrect password or corrupted backup file',
+    encryptionFailed: 'Failed to encrypt backup data',
+    decryptionFailed: 'Failed to decrypt backup data',
+    selectedFile: 'Selected Backup File',
+    encrypted: 'Encrypted',
+    unencrypted: 'Unencrypted',
+    startImport: 'Import Backup',
+    enterDecryptionPassword: 'Enter decryption password',
+    encryptedFileNote: 'This backup file is encrypted. Enter the password that was used when creating the backup.'
   },
 
   messages: {

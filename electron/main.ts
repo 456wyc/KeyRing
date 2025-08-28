@@ -1,5 +1,7 @@
-import { app, BrowserWindow, ipcMain, dialog, clipboard } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, clipboard, Menu } from 'electron'
 import * as path from 'path'
+import * as crypto from 'crypto'
+import CryptoJS from 'crypto-js'
 import { DataStorage } from './storage'
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -31,6 +33,11 @@ function createWindow(): void {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  // Disable the default menu for security and cleaner interface
+  if (!isDev) {
+    Menu.setApplicationMenu(null)
+  }
 }
 
 app.whenReady().then(() => {
@@ -99,5 +106,34 @@ ipcMain.handle('dialog:showError', async (_, message: string) => {
       title: 'Error',
       message: message
     })
+  }
+})
+
+// Crypto handlers for backup encryption
+const deriveKeyFromPassword = (password: string): string => {
+  const salt = crypto.createHash('sha256').update('keyring-backup-salt').digest()
+  return crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha256').toString('hex')
+}
+
+ipcMain.handle('crypto:encrypt', (_, data: string, password: string) => {
+  try {
+    const key = deriveKeyFromPassword(password)
+    const encrypted = CryptoJS.AES.encrypt(data, key).toString()
+    return encrypted
+  } catch (error) {
+    throw new Error('Encryption failed')
+  }
+})
+
+ipcMain.handle('crypto:decrypt', (_, encryptedData: string, password: string) => {
+  try {
+    const key = deriveKeyFromPassword(password)
+    const decrypted = CryptoJS.AES.decrypt(encryptedData, key).toString(CryptoJS.enc.Utf8)
+    if (!decrypted) {
+      throw new Error('Decryption failed - wrong password or corrupted data')
+    }
+    return decrypted
+  } catch (error) {
+    throw new Error('Decryption failed')
   }
 })

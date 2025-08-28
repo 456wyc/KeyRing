@@ -43,9 +43,10 @@ export const AccountDetailModal: React.FC<AccountDetailModalProps> = ({
   const fieldOrder = account.fieldOrder || Object.keys(account.fields)
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6 z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+        {/* Fixed Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
           <h2 className="text-xl font-semibold text-gray-900">{account.name}</h2>
           <div className="flex items-center space-x-2">
             <button
@@ -64,7 +65,9 @@ export const AccountDetailModal: React.FC<AccountDetailModalProps> = ({
           </div>
         </div>
 
-        <div className="p-6">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-6">
           <div className="space-y-4">
             {fieldOrder.map((key) => {
               const fieldConfig = account.fields[key]
@@ -109,12 +112,14 @@ export const AccountDetailModal: React.FC<AccountDetailModalProps> = ({
               )
             })}
           </div>
+          </div>
+        </div>
 
-          <div className="mt-6 pt-4 border-t border-gray-200">
-            <div className="text-xs text-gray-500 space-y-1">
-              <div>Created: {new Date(account.createdAt).toLocaleString()}</div>
-              <div>Updated: {new Date(account.updatedAt).toLocaleString()}</div>
-            </div>
+        {/* Fixed Footer */}
+        <div className="px-6 py-4 border-t border-gray-200 flex-shrink-0 bg-white">
+          <div className="text-xs text-gray-500 space-y-1">
+            <div>Created: {new Date(account.createdAt).toLocaleString()}</div>
+            <div>Updated: {new Date(account.updatedAt).toLocaleString()}</div>
           </div>
         </div>
       </div>

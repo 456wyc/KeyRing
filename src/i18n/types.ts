@@ -147,6 +147,26 @@ export interface I18nMessages {
     invalidAccountData: string
     importConfirm: string
     accountsImported: string
+    useEncryption: string
+    encryptionPassword: string
+    confirmPassword: string
+    enterPassword: string
+    encryptionNote: string
+    decryptionPassword: string
+    enterPasswordIfEncrypted: string
+    decryptionNote: string
+    passwordRequired: string
+    passwordMismatch: string
+    passwordTooShort: string
+    wrongPassword: string
+    encryptionFailed: string
+    decryptionFailed: string
+    selectedFile: string
+    encrypted: string
+    unencrypted: string
+    startImport: string
+    enterDecryptionPassword: string
+    encryptedFileNote: string
   }
 
   // Messages

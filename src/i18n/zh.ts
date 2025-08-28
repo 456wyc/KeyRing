@@ -137,7 +137,27 @@ export const zhMessages: I18nMessages = {
     invalidFormat: '无效的备份文件格式',
     invalidAccountData: '备份文件中的账户数据无效',
     importConfirm: '这将向您的收藏中导入 {count} 个账户。您当前有 {current} 个账户。继续吗？',
-    accountsImported: '成功导入 {count} 个账户'
+    accountsImported: '成功导入 {count} 个账户',
+    useEncryption: '加密备份文件',
+    encryptionPassword: '加密密码',
+    confirmPassword: '确认密码',
+    enterPassword: '输入一个强密码',
+    encryptionNote: '使用强密码保护您的备份。导入备份时需要此密码。',
+    decryptionPassword: '解密密码',
+    enterPasswordIfEncrypted: '如果备份已加密请输入密码',
+    decryptionNote: '未加密备份请留空。加密备份文件必填。',
+    passwordRequired: '加密备份需要密码',
+    passwordMismatch: '密码不匹配',
+    passwordTooShort: '密码长度至少为8个字符',
+    wrongPassword: '密码错误或备份文件损坏',
+    encryptionFailed: '备份数据加密失败',
+    decryptionFailed: '备份数据解密失败',
+    selectedFile: '已选择的备份文件',
+    encrypted: '已加密',
+    unencrypted: '未加密',
+    startImport: '开始导入',
+    enterDecryptionPassword: '输入解密密码',
+    encryptedFileNote: '此备份文件已加密，请输入创建备份时使用的密码。'
   },
 
   messages: {
