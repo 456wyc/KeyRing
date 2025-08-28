@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Lock, Key } from 'lucide-react'
+import { useI18n } from '../i18n'
+import { LanguageToggle } from './LanguageToggle'
 
 interface LoginScreenProps {
   onUnlock: () => void
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
+  const { t } = useI18n()
   const [masterPassword, setMasterPassword] = useState('')
   const [isFirstTime, setIsFirstTime] = useState(false)
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -30,7 +33,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
     if (!masterPassword) return
 
     if (isFirstTime && masterPassword !== confirmPassword) {
-      setError('Passwords do not match')
+      setError(t('login.passwordMismatch'))
       return
     }
 
@@ -49,10 +52,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
       if (success) {
         onUnlock()
       } else {
-        setError('Invalid master password')
+        setError(t('login.invalidPassword'))
       }
     } catch (error) {
-      setError('Failed to authenticate')
+      setError(isFirstTime ? t('messages.initializationFailed') : t('messages.unlockFailed'))
       console.error('Authentication error:', error)
     } finally {
       setLoading(false)
@@ -61,21 +64,25 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md relative">
+        <div className="absolute top-4 right-4">
+          <LanguageToggle />
+        </div>
+        
         <div className="text-center mb-8">
           <div className="bg-blue-100 rounded-full p-3 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
             <Key className="text-blue-600" size={32} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Key Ring</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('login.title')}</h1>
           <p className="text-gray-600">
-            {isFirstTime ? 'Create your master password' : 'Enter your master password'}
+            {isFirstTime ? t('login.createMasterPassword') : t('login.subtitle')}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="masterPassword" className="block text-sm font-medium text-gray-700 mb-2">
-              Master Password
+              {t('login.masterPassword')}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -85,7 +92,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
                 value={masterPassword}
                 onChange={(e) => setMasterPassword(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter master password"
+                placeholder={t('login.masterPassword')}
                 required
               />
             </div>
@@ -94,7 +101,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
           {isFirstTime && (
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm Password
+                {t('login.confirmPassword')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -104,7 +111,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Confirm master password"
+                  placeholder={t('login.confirmPassword')}
                   required
                 />
               </div>
@@ -122,14 +129,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
           >
-            {loading ? 'Please wait...' : (isFirstTime ? 'Create & Unlock' : 'Unlock')}
+            {loading ? t('common.loading') : (isFirstTime ? t('login.initialize') : t('login.unlock'))}
           </button>
         </form>
 
         {isFirstTime && (
           <div className="mt-6 p-4 bg-yellow-50 border border-yellow-300 rounded-lg">
             <p className="text-sm text-yellow-700">
-              <strong>Important:</strong> Remember your master password. It cannot be recovered if lost.
+              {t('login.importantWarning')}
             </p>
           </div>
         )}
