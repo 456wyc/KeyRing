@@ -5,7 +5,9 @@ import { PasswordGenerator } from './PasswordGenerator'
 import { DraggableFieldList } from './DraggableFieldList'
 import { TagInput } from './TagInput'
 import { TagDisplay } from './TagDisplay'
+import { Toast } from './Toast'
 import { useI18n } from '../i18n'
+import { useToast } from '../hooks/useToast'
 
 interface AccountCardProps {
   account: Account
@@ -16,6 +18,7 @@ interface AccountCardProps {
 
 export const AccountCard: React.FC<AccountCardProps> = ({ account, accounts, showTags = true, onUpdate }) => {
   const { t } = useI18n()
+  const { toast, showToast, hideToast } = useToast()
   
   // 获取所有现有标签
   const existingTags = React.useMemo(() => {
@@ -93,6 +96,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account, accounts, sho
   const handleCopy = async (text: string) => {
     try {
       await window.electronAPI.clipboard.write(text)
+      // 显示成功提示
+      showToast(t('messages.copiedToClipboard'))
     } catch (error) {
       console.error('Error copying to clipboard:', error)
     }
@@ -359,6 +364,13 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account, accounts, sho
           }}
           onPasswordGenerated={handlePasswordGenerated}
           initialRules={account.passwordRules}
+        />
+      )}
+
+      {toast.isVisible && (
+        <Toast
+          message={toast.message}
+          onClose={hideToast}
         />
       )}
 

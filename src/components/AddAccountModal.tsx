@@ -4,7 +4,9 @@ import { NewAccount, PasswordRules, FieldConfig, Account } from '../types'
 import { PasswordGenerator } from './PasswordGenerator'
 import { DraggableFieldList } from './DraggableFieldList'
 import { TagInput } from './TagInput'
+import { Toast } from './Toast'
 import { useI18n } from '../i18n'
+import { useToast } from '../hooks/useToast'
 
 interface AddAccountModalProps {
   accounts: Account[]
@@ -18,6 +20,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({
   onAccountAdded
 }) => {
   const { t } = useI18n()
+  const { toast, showToast, hideToast } = useToast()
   
   // 获取所有现有标签
   const existingTags = React.useMemo(() => {
@@ -215,6 +218,8 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({
   const handleCopy = async (text: string) => {
     try {
       await window.electronAPI.clipboard.write(text)
+      // 显示成功提示
+      showToast(t('messages.copiedToClipboard'))
     } catch (error) {
       console.error('Error copying to clipboard:', error)
     }
@@ -326,6 +331,13 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({
           onPasswordGenerated={handlePasswordGenerated}
           initialRules={account.passwordRules}
           onRulesUpdate={handleRulesUpdate}
+        />
+      )}
+
+      {toast.isVisible && (
+        <Toast
+          message={toast.message}
+          onClose={hideToast}
         />
       )}
 

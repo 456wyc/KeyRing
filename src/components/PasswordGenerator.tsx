@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { X, RefreshCw, Copy, Key, Hash } from 'lucide-react'
 import { PasswordRules } from '../types'
+import { Toast } from './Toast'
+import { useI18n } from '../i18n'
+import { useToast } from '../hooks/useToast'
 import CryptoJS from 'crypto-js'
 
 interface PasswordGeneratorProps {
@@ -16,6 +19,8 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
   initialRules,
   onRulesUpdate
 }) => {
+  const { t } = useI18n()
+  const { toast, showToast, hideToast } = useToast()
   const [rules, setRules] = useState<PasswordRules>(
     initialRules || {
       length: 16,
@@ -134,6 +139,8 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
   const handleCopyPassword = async () => {
     try {
       await window.electronAPI.clipboard.write(generatedPassword)
+      // 显示成功提示
+      showToast(t('messages.copiedToClipboard'))
     } catch (error) {
       console.error('Error copying password:', error)
     }
@@ -356,6 +363,13 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
           </button>
         </div>
       </div>
+
+      {toast.isVisible && (
+        <Toast
+          message={toast.message}
+          onClose={hideToast}
+        />
+      )}
     </div>
   )
 }

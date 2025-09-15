@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { X, Copy, Eye, EyeOff, Edit } from 'lucide-react'
 import { Account } from '../types'
+import { Toast } from './Toast'
+import { useI18n } from '../i18n'
+import { useToast } from '../hooks/useToast'
 
 interface AccountDetailModalProps {
   account: Account
@@ -13,11 +16,15 @@ export const AccountDetailModal: React.FC<AccountDetailModalProps> = ({
   onClose,
   onEdit
 }) => {
+  const { t } = useI18n()
+  const { toast, showToast, hideToast } = useToast()
   const [visibleFields, setVisibleFields] = useState<Set<string>>(new Set())
 
   const handleCopy = async (text: string) => {
     try {
       await window.electronAPI.clipboard.write(text)
+      // 显示成功提示
+      showToast(t('messages.copiedToClipboard'))
     } catch (error) {
       console.error('Error copying to clipboard:', error)
     }
@@ -123,6 +130,13 @@ export const AccountDetailModal: React.FC<AccountDetailModalProps> = ({
           </div>
         </div>
       </div>
+
+      {toast.isVisible && (
+        <Toast
+          message={toast.message}
+          onClose={hideToast}
+        />
+      )}
     </div>
   )
 }
