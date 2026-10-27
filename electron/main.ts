@@ -65,6 +65,22 @@ ipcMain.handle('storage:unlock', async (_, masterPassword: string) => {
   return await storage.unlock(masterPassword)
 })
 
+ipcMain.handle('storage:changeMasterPassword', async (_, currentPassword: string, newPassword: string) => {
+  return await storage.changeMasterPassword(currentPassword, newPassword)
+})
+
+ipcMain.handle('storage:removeMasterPassword', async (_, currentPassword: string) => {
+  return await storage.removeMasterPassword(currentPassword)
+})
+
+ipcMain.handle('storage:setMasterPassword', async (_, newPassword: string) => {
+  return await storage.setMasterPassword(newPassword)
+})
+
+ipcMain.handle('storage:isPasswordEnabled', async () => {
+  return await storage.isPasswordEnabled()
+})
+
 ipcMain.handle('storage:lock', async () => {
   storage.lock()
   return true

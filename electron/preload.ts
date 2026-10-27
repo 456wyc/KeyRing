@@ -24,6 +24,10 @@ export interface ElectronAPI {
   storage: {
     init: (masterPassword: string) => Promise<boolean>
     unlock: (masterPassword: string) => Promise<boolean>
+    changeMasterPassword: (currentPassword: string, newPassword: string) => Promise<boolean>
+    removeMasterPassword: (currentPassword: string) => Promise<boolean>
+    setMasterPassword: (newPassword: string) => Promise<boolean>
+    isPasswordEnabled: () => Promise<boolean>
     lock: () => Promise<boolean>
     isUnlocked: () => Promise<boolean>
     isInitialized: () => Promise<boolean>
@@ -48,6 +52,13 @@ const electronAPI: ElectronAPI = {
   storage: {
     init: (masterPassword: string) => ipcRenderer.invoke('storage:init', masterPassword),
     unlock: (masterPassword: string) => ipcRenderer.invoke('storage:unlock', masterPassword),
+    changeMasterPassword: (currentPassword: string, newPassword: string) =>
+      ipcRenderer.invoke('storage:changeMasterPassword', currentPassword, newPassword),
+    removeMasterPassword: (currentPassword: string) =>
+      ipcRenderer.invoke('storage:removeMasterPassword', currentPassword),
+    setMasterPassword: (newPassword: string) =>
+      ipcRenderer.invoke('storage:setMasterPassword', newPassword),
+    isPasswordEnabled: () => ipcRenderer.invoke('storage:isPasswordEnabled'),
     lock: () => ipcRenderer.invoke('storage:lock'),
     isUnlocked: () => ipcRenderer.invoke('storage:isUnlocked'),
     isInitialized: () => ipcRenderer.invoke('storage:isInitialized'),

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Plus, Lock, Search, Grid, List, Tag, Settings } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Plus, Lock, Search, Grid, List, Tag, Settings, KeyRound, ShieldOff } from 'lucide-react'
 import { Account } from '../types'
 import { AccountCard } from './AccountCard'
 import { AccountListView } from './AccountListView'
@@ -7,6 +7,7 @@ import { AccountDetailModal } from './AccountDetailModal'
 import { AddAccountModal } from './AddAccountModal'
 import { TagFilter } from './TagFilter'
 import { BackupRestore } from './BackupRestore'
+import { MasterPasswordModal } from './MasterPasswordModal'
 import { LanguageToggle } from './LanguageToggle'
 import { useI18n } from '../i18n'
 
@@ -33,6 +34,21 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
     return saved ? JSON.parse(saved) : true
   })
   const [showBackupRestore, setShowBackupRestore] = useState(false)
+  const [showMasterPassword, setShowMasterPassword] = useState(false)
+  const [passwordEnabled, setPasswordEnabled] = useState(true)
+
+  useEffect(() => {
+    loadPasswordStatus()
+  }, [])
+
+  const loadPasswordStatus = async () => {
+    try {
+      const enabled = await window.electronAPI.storage.isPasswordEnabled()
+      setPasswordEnabled(enabled)
+    } catch (error) {
+      console.error('Error checking master password status:', error)
+    }
+  }
 
   const filteredAccounts = accounts.filter(account => {
     // 文本筛选
@@ -89,6 +105,14 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
           <div className="flex items-center space-x-2">
             <LanguageToggle />
             <button
+              onClick={() => setShowMasterPassword(true)}
+              className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              title={passwordEnabled ? t('masterPassword.change') : t('masterPassword.enable')}
+            >
+              {passwordEnabled ? <KeyRound size={20} /> : <ShieldOff size={20} />}
+              <span>{passwordEnabled ? t('masterPassword.change') : t('masterPassword.enable')}</span>
+            </button>
+            <button
               onClick={() => setShowBackupRestore(true)}
               className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               title={t('backup.title')}
@@ -96,13 +120,15 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
               <Settings size={20} />
               <span>{t('backup.backupRestore')}</span>
             </button>
-            <button
-              onClick={onLock}
-              className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <Lock size={20} />
-              <span>{t('app.lock')}</span>
-            </button>
+            {passwordEnabled && (
+              <button
+                onClick={onLock}
+                className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <Lock size={20} />
+                <span>{t('app.lock')}</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -258,6 +284,14 @@ export const AccountManager: React.FC<AccountManagerProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {showMasterPassword && (
+        <MasterPasswordModal
+          passwordEnabled={passwordEnabled}
+          onClose={() => setShowMasterPassword(false)}
+          onStatusChange={loadPasswordStatus}
+        />
       )}
 
       {showBackupRestore && (

@@ -36,6 +36,38 @@ export const zhMessages: I18nMessages = {
     importantWarning: '重要提示：请牢记您的主密码。密码丢失后无法恢复。'
   },
 
+  masterPassword: {
+    change: '修改主密码',
+    title: '修改主密码',
+    description: '修改后，所有账户数据将使用新主密码重新加密。',
+    currentPassword: '当前主密码',
+    newPassword: '新主密码',
+    confirmNewPassword: '确认新主密码',
+    passwordRequired: '请填写所有密码',
+    passwordMismatch: '两次输入的新密码不一致',
+    sameAsCurrent: '新主密码不能与当前主密码相同',
+    wrongCurrentPassword: '当前主密码错误',
+    changing: '正在重新加密...',
+    success: '主密码修改成功',
+    successNote: '下次解锁时请使用新主密码。',
+    failed: '主密码操作失败',
+    warning: '请牢记新主密码，密码丢失后无法恢复。',
+    remove: '取消主密码',
+    removeTitle: '取消主密码',
+    removeDescription: '取消后打开应用无需输入主密码。',
+    removeWarning: '取消主密码后数据将不再受密码保护，任何能访问此电脑的人都可以查看账户数据。',
+    removeConfirm: '输入当前主密码以确认取消：',
+    removing: '正在处理...',
+    removeSuccess: '已取消主密码',
+    removeNote: '下次启动将直接进入应用，无需输入主密码。',
+    enable: '启用主密码',
+    enableTitle: '启用主密码',
+    enableDescription: '设置主密码后，每次打开应用都需要输入它才能查看账户数据。',
+    enableSuccess: '已启用主密码',
+    enableNote: '下次解锁时请使用新的主密码。',
+    disabled: '当前未启用主密码'
+  },
+
   accountManager: {
     title: '密钥环',
     searchPlaceholder: '搜索账户...',

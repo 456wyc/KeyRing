@@ -37,6 +37,39 @@ export interface I18nMessages {
     importantWarning: string
   }
 
+  // Master Password
+  masterPassword: {
+    change: string
+    title: string
+    description: string
+    currentPassword: string
+    newPassword: string
+    confirmNewPassword: string
+    passwordRequired: string
+    passwordMismatch: string
+    sameAsCurrent: string
+    wrongCurrentPassword: string
+    changing: string
+    success: string
+    successNote: string
+    failed: string
+    warning: string
+    remove: string
+    removeTitle: string
+    removeDescription: string
+    removeWarning: string
+    removeConfirm: string
+    removing: string
+    removeSuccess: string
+    removeNote: string
+    enable: string
+    enableTitle: string
+    enableDescription: string
+    enableSuccess: string
+    enableNote: string
+    disabled: string
+  }
+
   // Account Manager
   accountManager: {
     title: string

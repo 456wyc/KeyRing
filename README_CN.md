@@ -1,12 +1,23 @@
 # Key Ring - 账户管理工具
 
+<p align="center">
+  🌐 <a href="README.md">English</a> · <strong>简体中文</strong> · <a href="https://456wyc.github.io/KeyRing/">项目主页</a>
+</p>
+
+<p align="center">
+  <img src="snapshots/image1.png" alt="Key Ring 界面截图" width="720" />
+</p>
+
 一个安全的跨平台桌面账户管理工具，基于 Electron、React 和 TypeScript 构建。
+
+🔗 **仓库地址**：https://github.com/456wyc/KeyRing · 🌐 **项目主页**：https://456wyc.github.io/KeyRing/
 
 ## ✨ 功能特性
 
 ### 🔒 安全与认证
 - 🔐 **安全存储**: 使用主密码进行 AES 加密
 - 🔑 **主密码保护**: 基于 PBKDF2 的认证机制
+- 🔁 **主密码管理**: 随时修改、取消或重新启用主密码
 - 💾 **数据备份**: 支持导出/导入数据备份
 - 🛡️ **本地存储**: 数据完全本地化，无云端依赖
 
@@ -34,12 +45,18 @@
 
 ### 方法1: 直接运行 (推荐)
 
-1. **安装依赖**:
+1. **克隆仓库**:
+   ```bash
+   git clone https://github.com/456wyc/KeyRing.git
+   cd KeyRing
+   ```
+
+2. **安装依赖**:
    ```bash
    npm install
    ```
 
-2. **运行应用**:
+3. **运行应用**:
    ```bash
    npm run start
    ```
@@ -53,6 +70,26 @@ npm run dev
 ```
 
 这将同时启动 Vite 开发服务器和 Electron。
+
+## 📸 界面截图
+
+### 主密码解锁
+![主密码解锁](snapshots/image6.png)
+
+### 账户管理（卡片视图）
+![卡片视图](snapshots/image1.png)
+
+### 账户管理（列表视图）
+![列表视图](snapshots/image3.png)
+
+### 添加账户
+![添加账户](snapshots/image2.png)
+
+### 备份与恢复（导出）
+![导出备份](snapshots/image4.png)
+
+### 备份与恢复（导入）
+![导入备份](snapshots/image5.png)
 
 ## 📦 打包问题解决方案
 
@@ -72,12 +109,34 @@ npm run dev
    npm run package:win
    ```
 
+### 网络问题（下载失败）
+
+electron-builder 打包时需要从 GitHub 下载 Electron 二进制包，网络不通会报
+`EOF` / `ERR_ELECTRON_BUILDER_CANNOT_EXECUTE`。此时改用国内镜像打包：
+
+```bash
+npm run package:win:cn
+```
+
+该脚本将 Electron 二进制指向 npmmirror，并通过 `ELECTRON_BUILDER_BINARIES_MIRROR`
+把 winCodeSign / NSIS 资源一并走镜像。`package.json` 中也已配置：
+
+```json
+"electronDownload": { "mirror": "https://npmmirror.com/mirrors/electron/" }
+```
+
 ## 🎯 使用指南
 
 ### 首次使用
 1. 启动应用后会要求创建主密码
 2. 设置一个强密码（无法恢复，请牢记）
 3. 进入主界面
+
+### 主密码管理
+1. 点击右上角"修改主密码"
+2. **修改**：验证当前主密码后设置新密码（数据将自动重新加密）
+3. **取消**：验证当前主密码后可取消密码保护
+4. **启用**：取消保护后可在同一弹窗中重新设置主密码
 
 ### 添加账户
 1. 点击 "Add Account" 按钮
@@ -158,9 +217,24 @@ key-ring/
 │   ├── preload.ts        # 预加载脚本
 │   └── storage.ts        # 加密存储
 ├── _doc/                 # 项目文档
+├── docs/                 # GitHub Pages 宣传页
+│   ├── index.html        # 项目落地页
+│   └── screenshots/      # 落地页使用的截图
+├── snapshots/            # README 使用截图
 ├── dist/                 # 构建输出
 └── run.bat              # Windows 启动脚本
 ```
+
+## 🌐 GitHub Pages
+
+项目宣传页位于 `docs/` 目录，发布步骤：
+
+1. 将本仓库推送到 GitHub
+2. 打开 **Settings → Pages**
+3. **Source** 选择 *Deploy from a branch*，分支选 `main`，目录选 `/docs`
+4. 访问 **https://456wyc.github.io/KeyRing/** 即可查看宣传页
+
+宣传页支持中英文切换、功能总览与截图画廊。
 
 ## ❓ 常见问题
 
@@ -180,6 +254,11 @@ A: 有两种备份方式：
 
 **Q: 如何恢复数据？**
 A: 使用"备份与恢复"功能导入之前导出的JSON备份文件，系统会自动验证数据完整性。
+
+## 🌐 文档语言
+
+- [English](README.md) — 英文文档
+- **简体中文** — 当前文档
 
 ## 📄 许可证
 

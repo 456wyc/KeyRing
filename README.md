@@ -1,12 +1,23 @@
 # Key Ring - Account Management Tool
 
+<p align="center">
+  🌐 <strong>English</strong> · <a href="README_CN.md">简体中文</a> · <a href="https://456wyc.github.io/KeyRing/">Website</a>
+</p>
+
+<p align="center">
+  <img src="snapshots/image1.png" alt="Key Ring Screenshot" width="720" />
+</p>
+
 A secure, cross-platform desktop account management tool built with Electron, React, and TypeScript.
+
+🔗 **Repository**: https://github.com/456wyc/KeyRing · 🌐 **Website**: https://456wyc.github.io/KeyRing/
 
 ## ✨ Features
 
 ### 🔒 Security & Authentication
 - 🔐 **Secure Storage**: All data encrypted with AES using master password
 - 🔑 **Master Password Protection**: PBKDF2-based authentication with salt
+- 🔁 **Master Password Management**: Change, remove, or re-enable the master password at any time
 - 💾 **Data Backup**: Export/import backup functionality
 - 🛡️ **Local Storage**: Completely offline, no cloud dependencies
 
@@ -34,12 +45,18 @@ A secure, cross-platform desktop account management tool built with Electron, Re
 
 ### Method 1: Direct Run (Recommended)
 
-1. **Install dependencies**:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/456wyc/KeyRing.git
+   cd KeyRing
+   ```
+
+2. **Install dependencies**:
    ```bash
    npm install
    ```
 
-2. **Run application**:
+3. **Run application**:
    ```bash
    npm run start
    ```
@@ -53,6 +70,26 @@ npm run dev
 ```
 
 This will start both the Vite dev server and Electron in development mode.
+
+## 📸 Screenshots
+
+### Unlock Screen
+![Unlock Screen](snapshots/image6.png)
+
+### Account Management (Card View)
+![Card View](snapshots/image1.png)
+
+### Account Management (List View)
+![List View](snapshots/image3.png)
+
+### Add Account
+![Add Account](snapshots/image2.png)
+
+### Backup & Restore (Export)
+![Backup Export](snapshots/image4.png)
+
+### Backup & Restore (Import)
+![Backup Import](snapshots/image5.png)
 
 ## 📦 Building Solutions
 
@@ -72,12 +109,32 @@ If you encounter packaging errors (symlink permission issues), here are solution
    npm run package:win
    ```
 
+### Network Issues (Download Failures)
+
+electron-builder downloads the Electron binary from GitHub while packaging. If the download fails (`EOF` / `ERR_ELECTRON_BUILDER_CANNOT_EXECUTE`), use the China mirror build:
+
+```bash
+npm run package:win:cn
+```
+
+This script uses `npmmirror` for the Electron binary and `ELECTRON_BUILDER_BINARIES_MIRROR` for winCodeSign / NSIS resources. Mirrors are also configured in `package.json`:
+
+```json
+"electronDownload": { "mirror": "https://npmmirror.com/mirrors/electron/" }
+```
+
 ## 🎯 Usage Guide
 
 ### First Time Setup
 1. Launch the app and create a master password
 2. Set a strong password (cannot be recovered, remember it!)
 3. Enter the main interface
+
+### Master Password Management
+1. Click "Change Master Password" in the top-right corner
+2. **Change**: Verify current password, then set a new one (data is re-encrypted)
+3. **Remove**: Verify current password to disable password protection
+4. **Enable**: If protection was removed, set a new master password from the same dialog
 
 ### Adding Accounts
 1. Click "Add Account" button
@@ -158,9 +215,24 @@ key-ring/
 │   ├── preload.ts         # Preload script
 │   └── storage.ts         # Encrypted storage
 ├── _doc/                  # Project documentation
+├── docs/                  # GitHub Pages site (landing page)
+│   ├── index.html         # Project landing page
+│   └── screenshots/       # Screenshots used by the landing page
+├── snapshots/             # Screenshots for README
 ├── dist/                  # Build output
 └── run.bat               # Windows startup script
 ```
+
+## 🌐 GitHub Pages
+
+A project landing page is available under the `docs/` folder. To publish it:
+
+1. Push this repository to GitHub
+2. Go to **Settings → Pages**
+3. Set **Source** to *Deploy from a branch*, branch `main`, folder `/docs`
+4. The landing page will be available at **https://456wyc.github.io/KeyRing/**
+
+The page supports bilingual (EN/中文) switching, feature overview, and an interactive screenshot gallery.
 
 ## ❓ FAQ
 
@@ -180,6 +252,11 @@ A: There are two backup methods:
 
 **Q: How to restore data?**
 A: Use "Backup & Restore" feature to import previously exported JSON backup files. The system will automatically verify data integrity.
+
+## 🌐 Documentation Languages
+
+- **English** — current document
+- [简体中文](README_CN.md) — Chinese documentation
 
 ## 📄 License
 

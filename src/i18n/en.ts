@@ -36,6 +36,38 @@ export const enMessages: I18nMessages = {
     importantWarning: 'Important: Remember your master password. It cannot be recovered if lost.'
   },
 
+  masterPassword: {
+    change: 'Change Master Password',
+    title: 'Change Master Password',
+    description: 'All account data will be re-encrypted with the new master password.',
+    currentPassword: 'Current Master Password',
+    newPassword: 'New Master Password',
+    confirmNewPassword: 'Confirm New Master Password',
+    passwordRequired: 'Please fill in all password fields',
+    passwordMismatch: 'The new passwords do not match',
+    sameAsCurrent: 'The new master password must be different from the current one',
+    wrongCurrentPassword: 'Current master password is incorrect',
+    changing: 'Re-encrypting...',
+    success: 'Master password changed successfully',
+    successNote: 'Use the new master password the next time you unlock.',
+    failed: 'Failed to update master password',
+    warning: 'Remember your new master password. It cannot be recovered if lost.',
+    remove: 'Remove Master Password',
+    removeTitle: 'Remove Master Password',
+    removeDescription: 'The app will open without asking for a master password.',
+    removeWarning: 'After removing the master password your data is no longer password protected. Anyone with access to this computer can read your accounts.',
+    removeConfirm: 'Enter your current master password to confirm:',
+    removing: 'Processing...',
+    removeSuccess: 'Master password removed',
+    removeNote: 'The app will open directly next time, without asking for a password.',
+    enable: 'Enable Master Password',
+    enableTitle: 'Enable Master Password',
+    enableDescription: 'Once set, the master password is required every time you open the app.',
+    enableSuccess: 'Master password enabled',
+    enableNote: 'Use the new master password the next time you unlock.',
+    disabled: 'Master password is currently disabled'
+  },
+
   accountManager: {
     title: 'Key Ring',
     searchPlaceholder: 'Search accounts...',

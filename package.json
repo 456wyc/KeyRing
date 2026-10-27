@@ -1,6 +1,6 @@
 {
   "name": "key-ring",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cross-platform desktop account management tool",
   "main": "dist/main.js",
   "scripts": {
@@ -12,6 +12,7 @@
     "build:renderer": "vite build",
     "package": "npm run build && electron-builder",
     "package:win": "npm run build && electron-builder --win",
+    "package:win:cn": "set ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/&& npm run build && electron-builder --win",
     "package:mac": "npm run build && electron-builder --mac",
     "package:linux": "npm run build && electron-builder --linux",
     "start": "npm run build && electron dist/main.js"
@@ -50,6 +51,9 @@
   "build": {
     "appId": "com.keyring.app",
     "productName": "Key Ring",
+    "electronDownload": {
+      "mirror": "https://npmmirror.com/mirrors/electron/"
+    },
     "directories": {
       "output": "packages"
     },

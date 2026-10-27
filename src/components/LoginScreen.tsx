@@ -14,6 +14,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [checking, setChecking] = useState(true)
 
   useEffect(() => {
     checkIfFirstTime()
@@ -22,9 +23,25 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
   const checkIfFirstTime = async () => {
     try {
       const initialized = await window.electronAPI.storage.isInitialized()
-      setIsFirstTime(!initialized)
+      if (!initialized) {
+        setIsFirstTime(true)
+        return
+      }
+
+      // 已取消主密码：无需输入，直接进入
+      const passwordEnabled = await window.electronAPI.storage.isPasswordEnabled()
+      if (!passwordEnabled) {
+        const unlocked = await window.electronAPI.storage.unlock('')
+        if (unlocked) {
+          onUnlock()
+          return
+        }
+        setError(t('messages.unlockFailed'))
+      }
     } catch (error) {
       setIsFirstTime(true)
+    } finally {
+      setChecking(false)
     }
   }
 
@@ -79,6 +96,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
           </p>
         </div>
 
+        {checking && !isFirstTime ? (
+          <div className="text-center py-8 text-gray-600">{t('common.loading')}</div>
+        ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="masterPassword" className="block text-sm font-medium text-gray-700 mb-2">
@@ -132,6 +152,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onUnlock }) => {
             {loading ? t('common.loading') : (isFirstTime ? t('login.initialize') : t('login.unlock'))}
           </button>
         </form>
+        )}
 
         {isFirstTime && (
           <div className="mt-6 p-4 bg-yellow-50 border border-yellow-300 rounded-lg">
